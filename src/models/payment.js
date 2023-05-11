@@ -13,7 +13,7 @@ const paymentSchema = new mongoose.Schema({
   },
 });
 
-const Payment = mongoose.model("Payment", paymentSchema);
+const Payment = mongoose.model("payment", paymentSchema);
 
 function validatePayment(payment) {
   let template = Joi.object().keys({

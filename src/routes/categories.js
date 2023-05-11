@@ -2,7 +2,7 @@ const { validate, Category } = require("../models/category");
 const express = require("express");
 const router = express.Router();
 
-router.get("/all", async (resq, res) => {
+router.get("/all", async (req, res) => {
   const category = await Category.find().sort("name");
   res.send(category);
 });
