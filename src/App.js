@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const orders = require("./routes/orders");
 const products = require("./routes/products");
+const categories = require("./routes/categories");
 const app = express();
 
 mongoose
@@ -16,6 +17,7 @@ mongoose
 app.use(express.json());
 app.use("/api/orders", orders);
 app.use("/api/products", products);
+app.use("/api/categories", categories);
 
 const port = process.env.PORT || 4500;
 
