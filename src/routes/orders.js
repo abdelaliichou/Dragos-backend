@@ -5,7 +5,11 @@ const router = express.Router();
 const { Product } = require("../models/product");
 
 router.get("/all", async (req, res) => {
-  const order = await Order.find().sort("name");
+  const order = await Order.find().populate({
+    path: "products.product_id",
+    model: "products",
+    select: "name price image -_id",
+  });
   res.send(order);
 });
 
@@ -120,7 +124,11 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate({
+    path: "products.product_id",
+    model: "products",
+    select: "name price image -_id",
+  });
 
   if (!order)
     return res.status(404).send("The order with the given ID was not found.");
