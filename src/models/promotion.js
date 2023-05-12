@@ -32,7 +32,7 @@ const promotionSchema = new mongoose.Schema({
   ],
 });
 
-const Promotion = mongoose.model("Promotion", promotionSchema);
+const Promotion = mongoose.model("promotion", promotionSchema);
 
 function validatePromotion(promotion) {
   let template = Joi.object().keys({
