@@ -11,15 +11,27 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  delivery_id: {
+  zip: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  country: {
     type: String,
     required: true,
   },
   payment_id: {
-    type: String,
-    required: true,
-  },
-  shipping_id: {
     type: String,
     required: true,
   },
@@ -50,11 +62,14 @@ const Order = mongoose.model("Order", orderSchema);
 function validateOrder(order) {
   let template = Joi.object().keys({
     status: Joi.string().required(),
+    state: Joi.string().required(),
+    city: Joi.string().required(),
+    country: Joi.string().required(),
+    address: Joi.string().required(),
+    zip: Joi.string().required(),
     date: Joi.date().required(),
     total: Joi.number().required(),
     user: Joi.objectId().required(),
-    delivery_id: Joi.objectId().required(),
-    shipping_id: Joi.objectId().required(),
     payment_id: Joi.objectId().required(),
     products: Joi.array().items(
       Joi.object({

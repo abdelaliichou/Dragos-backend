@@ -8,6 +8,7 @@ const orders = require("./routes/orders");
 const products = require("./routes/products");
 const categories = require("./routes/categories");
 const payments = require("./routes/payments");
+const promotions = require("./routes/promotions");
 const app = express();
 
 mongoose
@@ -20,6 +21,7 @@ app.use("/api/orders", orders);
 app.use("/api/products", products);
 app.use("/api/categories", categories);
 app.use("/api/payments", payments);
+app.use("/api/promotions", promotions);
 
 const port = process.env.PORT || 4500;
 
