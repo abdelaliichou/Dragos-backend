@@ -13,6 +13,25 @@ router.get("/all", async (req, res) => {
   res.send(products);
 });
 
+router.get("/search/:product", async (req, res) => {
+  const productName = req.params.product;
+  const regex = new RegExp(productName, "i"); // Use RegExp with "i" option for case-insensitive search
+  const result_list = await Product.find({ name: { $regex: regex } });
+
+  if (!result_list || result_list.length === 0) {
+    return res.status(400).send("No product found !");
+  }
+
+  res.send(result_list);
+
+  // const productName = req.params.product;
+  // const result_list = await Product.find({ name: productName });
+
+  // if (!result_list) return res.status(400).send("No product found !");
+
+  // res.send(result_list);
+});
+
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
