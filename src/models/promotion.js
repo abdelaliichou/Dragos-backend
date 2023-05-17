@@ -32,7 +32,11 @@ const promotionSchema = new mongoose.Schema({
   ],
 });
 
+<<<<<<< HEAD
 const Promotion = mongoose.model("promotion", promotionSchema);
+=======
+const Promotion = mongoose.model("Promotion", promotionSchema);
+>>>>>>> sakh-branch
 
 function validatePromotion(promotion) {
   let template = Joi.object().keys({
