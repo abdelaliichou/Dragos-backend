@@ -1,17 +1,29 @@
 {
   "name": "backend",
   "version": "1.0.0",
+<<<<<<< HEAD
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js"
+=======
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon App.js"
+>>>>>>> sakh-branch
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abdelaliichou/Dragos-backend.git"
   },
   "keywords": [],
+<<<<<<< HEAD
+  "author": "",
+=======
   "author": "CeSak44",
+>>>>>>> sakh-branch
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/abdelaliichou/Dragos-backend/issues"
@@ -19,6 +31,16 @@
   "homepage": "https://github.com/abdelaliichou/Dragos-backend#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+<<<<<<< HEAD
+    "config": "^3.3.9",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "joi-objectid": "^4.0.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.1.0"
+  }
+=======
     "compression": "^1.7.4",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
@@ -37,4 +59,5 @@
     "uuid": "^9.0.0"
   },
   "description": ""
+>>>>>>> sakh-branch
 }

@@ -29,7 +29,11 @@ const productSchema = new mongoose.Schema({
   },
 });
 
+<<<<<<< HEAD
+const Product = mongoose.model("products", productSchema);
+=======
 const Product = mongoose.model("Product", productSchema);
+>>>>>>> sakh-branch
 
 function validateProduct(product) {
   let template = Joi.object().keys({

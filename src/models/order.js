@@ -11,7 +11,27 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+<<<<<<< HEAD
+  zip: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  country: {
+=======
   delivery_id: {
+>>>>>>> sakh-branch
     type: String,
     required: true,
   },
@@ -19,10 +39,13 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+<<<<<<< HEAD
+=======
   shipping_id: {
     type: String,
     required: true,
   },
+>>>>>>> sakh-branch
   date: {
     type: Date,
     required: true,
@@ -50,11 +73,22 @@ const Order = mongoose.model("Order", orderSchema);
 function validateOrder(order) {
   let template = Joi.object().keys({
     status: Joi.string().required(),
+<<<<<<< HEAD
+    state: Joi.string().required(),
+    city: Joi.string().required(),
+    country: Joi.string().required(),
+    address: Joi.string().required(),
+    zip: Joi.string().required(),
+    date: Joi.date().required(),
+    total: Joi.number().required(),
+    user: Joi.objectId().required(),
+=======
     date: Joi.date().required(),
     total: Joi.number().required(),
     user: Joi.objectId().required(),
     delivery_id: Joi.objectId().required(),
     shipping_id: Joi.objectId().required(),
+>>>>>>> sakh-branch
     payment_id: Joi.objectId().required(),
     products: Joi.array().items(
       Joi.object({
