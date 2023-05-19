@@ -14,7 +14,6 @@ const dbConnection = require("./config/dbConnection");
 const ApiError = require("./Utils/apiError.js");
 const globalError = require("./middlewares/errorMiddleware");
 
-
 // mongoose
 //   .connect("mongodb://127.0.0.1:27017/NutryBoostDB")
 //   .then(() => console.log("Connected to MongoDB..."))
@@ -23,19 +22,19 @@ const globalError = require("./middlewares/errorMiddleware");
 // Connect with db
 dbConnection();
 
-  app.use(express.json());
+app.use(express.json());
 app.use("/api/orders", orders);
 app.use("/api/products", products);
 app.use("/api/categories", categories);
 app.use("/api/payments", payments);
 app.use("/api/promotions", promotions);
 app.use("/api/users", userRoute);
-app.use('/api/auth', authRoute);
+app.use("/api/auth", authRoute);
 
 // Global error handling middleware for express
 app.use(globalError);
 
-app.all('*', (req, res, next) => {
+app.all("*", (req, res, next) => {
   next(new ApiError(`Can't find this route: ${req.originalUrl}`, 400));
 });
 
@@ -46,7 +45,7 @@ app.listen(port, () => {
 });
 
 // Handle rejection outside express
-process.on('unhandledRejection', (err) => {
+process.on("unhandledRejection", (err) => {
   console.error(`UnhandledRejection Errors: ${err.name} | ${err.message}`);
   server.close(() => {
     console.error(`Shutting down....`);
