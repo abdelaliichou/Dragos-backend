@@ -50,7 +50,7 @@ const createUserValidator = [
 
   check('phone')
     .optional()
-    .isMobilePhone(['ar-EG', 'ar-SA'])
+    .isMobilePhone(['ar-DZ', 'ar-SA'])
     .withMessage('Invalid phone number only accepted Egy and SA Phone numbers'),
 
   check('profileImg').optional(),

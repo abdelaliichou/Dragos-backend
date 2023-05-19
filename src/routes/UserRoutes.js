@@ -29,8 +29,8 @@ const {
 // CRUD operation is allowed to manager or admin roles only 
 router
   .route('/')
-  .get(getUsers)  
-  .post(CreatNewUser);
+  .get(getUserValidator,getUsers)  
+  .post(createUserValidator,CreatNewUser);
 
   router
   .route('/:id')

@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config({path:'.env'});
 
-const DB_URI = process.env.DB_URI;
+const DB_URI = "mongodb+srv://ChihebSakh:Fzfi50uS4tjP1QyY@dragoscluster.z4xs4u8.mongodb.net/?retryWrites=true&w=majority"
 
 const dbConnection = () => {
   mongoose

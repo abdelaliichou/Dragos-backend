@@ -6,10 +6,10 @@ const {
 
 const {
   signup,
-  login
-//   forgotPassword,
-//   verifyPassResetCode,
-//   resetPassword,
+  login,
+  forgotPassword,
+  verifyPassResetCode,
+  resetPassword,
 } = require('../services/AuthService');
 
 const router = express.Router();

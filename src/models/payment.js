@@ -13,11 +13,7 @@ const paymentSchema = new mongoose.Schema({
   },
 });
 
-<<<<<<< HEAD
 const Payment = mongoose.model("payment", paymentSchema);
-=======
-const Payment = mongoose.model("Payment", paymentSchema);
->>>>>>> sakh-branch
 
 function validatePayment(payment) {
   let template = Joi.object().keys({

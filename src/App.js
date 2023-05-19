@@ -11,14 +11,14 @@ const app = express();
 const userRoute = require("./routes/UserRoutes");
 const authRoute = require("./routes/authRoute");
 const dbConnection = require("./config/dbConnection");
-const ApiError = require("./utils/apiError");
+const ApiError = require("./Utils/apiError.js");
 const globalError = require("./middlewares/errorMiddleware");
 
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017/NutryBoostDB")
-  .then(() => console.log("Connected to MongoDB..."))
-  .catch((err) => console.error("Could not connect to MongoDB..."));
+// mongoose
+//   .connect("mongodb://127.0.0.1:27017/NutryBoostDB")
+//   .then(() => console.log("Connected to MongoDB..."))
+//   .catch((err) => console.error("Could not connect to MongoDB..."));
 
 // Connect with db
 dbConnection();
