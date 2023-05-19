@@ -19,6 +19,7 @@ router.post("/", async (req, res) => {
   let payment = new Payment({
     user: req.body.user,
     type: req.body.type,
+    date: req.body.date,
   });
 
   result = await payment.save();

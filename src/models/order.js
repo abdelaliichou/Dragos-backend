@@ -43,6 +43,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  notes: {
+    type: String,
+    required: true,
+  },
   products: [
     {
       product_id: {
@@ -63,6 +67,7 @@ function validateOrder(order) {
   let template = Joi.object().keys({
     status: Joi.string().required(),
     state: Joi.string().required(),
+    notes: Joi.string().required(),
     city: Joi.string().required(),
     country: Joi.string().required(),
     address: Joi.string().required(),

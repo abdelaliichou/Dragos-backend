@@ -5,11 +5,24 @@ const router = express.Router();
 const { Category } = require("../models/category");
 
 router.get("/all", async (req, res) => {
-  const products = await Product.find().sort("name").populate({
-    path: "category_id",
-    model: "Category",
-    select: "name image -_id",
-  });
+  const products = await Product.find()
+    .sort("name")
+    .populate({
+      path: "category_id",
+      model: "Category",
+      select: "name image -_id",
+    })
+    .populate({
+      path: "brand_id",
+      model: "Brand",
+      select: "name logo -_id",
+    })
+    .populate({
+      path: "reviews.user",
+      model: "User",
+      select: "name profileImg -_id",
+    });
+
   res.send(products);
 });
 
@@ -41,6 +54,13 @@ router.post("/", async (req, res) => {
 
   let product = new Product({
     name: req.body.name,
+    brand_id: req.body.brand_id,
+    overview: req.body.overview,
+    howToUse: req.body.howToUse,
+    rating: req.body.rating,
+    caution: req.body.caution,
+    features: req.body.features,
+    reviews: req.body.reviews,
     discription: req.body.discription,
     price: req.body.price,
     image: req.body.image,
@@ -67,6 +87,13 @@ router.put("/:id", async (req, res) => {
       discription: req.body.discription,
       price: req.body.price,
       image: req.body.image,
+      brand_id: req.body.brand_id,
+      overview: req.body.overview,
+      howToUse: req.body.howToUse,
+      rating: req.body.rating,
+      caution: req.body.caution,
+      features: req.body.features,
+      reviews: req.body.reviews,
       quantity: req.body.quantity,
       category_id: req.body.category_id,
     },
@@ -91,11 +118,22 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const product = await Product.findById(req.params.id).populate({
-    path: "category_id",
-    model: "Category",
-    select: "name image -_id",
-  });
+  const product = await Product.findById(req.params.id)
+    .populate({
+      path: "category_id",
+      model: "Category",
+      select: "name image -_id",
+    })
+    .populate({
+      path: "brand_id",
+      model: "Brand",
+      select: "name logo -_id",
+    })
+    .populate({
+      path: "reviews.user",
+      model: "User",
+      select: "name profileImg -_id",
+    });
 
   if (!product)
     return res.status(404).send("The product with the given ID was not found.");

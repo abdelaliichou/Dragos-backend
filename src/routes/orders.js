@@ -50,6 +50,7 @@ router.post("/", async (req, res) => {
   let order = new Order({
     status: req.body.status,
     state: req.body.state,
+    notes: req.body.notes,
     city: req.body.city,
     country: req.body.country,
     address: req.body.address,
@@ -99,6 +100,7 @@ router.put("/:id", async (req, res) => {
     {
       status: req.body.status,
       state: req.body.state,
+      notes: req.body.notes,
       city: req.body.city,
       country: req.body.country,
       address: req.body.address,

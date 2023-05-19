@@ -7,6 +7,7 @@ const products = require("./routes/products");
 const categories = require("./routes/categories");
 const payments = require("./routes/payments");
 const promotions = require("./routes/promotions");
+const brands = require("./routes/brands");
 const app = express();
 const userRoute = require("./routes/UserRoutes");
 const authRoute = require("./routes/authRoute");
@@ -28,6 +29,7 @@ app.use("/api/products", products);
 app.use("/api/categories", categories);
 app.use("/api/payments", payments);
 app.use("/api/promotions", promotions);
+app.use("/api/brands", brands);
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 
