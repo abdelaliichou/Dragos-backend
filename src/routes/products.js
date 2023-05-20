@@ -46,6 +46,31 @@ router.get("/search/:product", async (req, res) => {
   // res.send(result_list);
 });
 
+router.post("/rating/add", async (req, res) => {
+  const product_id = req.body.product_id;
+  const review = req.body.review;
+  let rating = req.body.rating;
+
+  const product = await Product.findById(product_id);
+  if (!product) return res.status(400).send("Invalid product ID !");
+
+  if (!review) return res.status(400).send("please insert a Review !");
+
+  if (!rating) rating = 0;
+
+  // user should be from the jwt
+
+  product.reviews.push({
+    user: "6462879388555585056d8799",
+    review: review,
+    rating: rating,
+  });
+
+  result = await product.save();
+
+  res.send(result);
+});
+
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);

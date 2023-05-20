@@ -61,6 +61,12 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      rating: {
+        type: Number,
+        required: false,
+        min: 0,
+        max: 5,
+      },
     },
   ],
 });
@@ -84,7 +90,8 @@ function validateProduct(product) {
     reviews: Joi.array().items(
       Joi.object({
         user: Joi.objectId().required(),
-        review: Joi.string().required(),
+        review: Joi.string(),
+        rating: Joi.number().min(0).max(5),
       })
     ),
   });
