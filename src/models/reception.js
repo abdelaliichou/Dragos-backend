@@ -11,20 +11,24 @@ const receptionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  receivedItems: {
-    type: [String],
-    required: true,
-  },
-  receivedQuantities: {
-    type: [Number],
-    required: true,
-  },
+  products: [
+    {
+      receivedItem: {
+        type: String,
+        required: true,
+      },
+      receivedQuantity: {
+        type: Number,
+        default: 1,
+      },
+      receivedPrice: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
   receivedTotal: {
     type: Number,
-    required: true,
-  },
-  receivedPrices: {
-    type: [Number],
     required: true,
   },
   receivedValue: {
@@ -47,9 +51,13 @@ function validateReception(reception) {
   let template = Joi.object().keys({
     arrivalDate: Joi.date().required(),
     supplier_id: Joi.objectId().required(),
-    receivedItems: Joi.array().items(Joi.objectId()).required(),
-    receivedQuantities: Joi.array().items(Joi.number()).required(),
-    receivedPrices: Joi.array().items(Joi.number()).required(),
+    products: Joi.array().items(
+      Joi.object({
+        receivedItem: Joi.objectId().required(),
+        receivedQuantity: Joi.number().default(1),
+        receivedPrice: Joi.number().required(),
+      })
+    ),
     receivedTotal: Joi.number().required(),
     receivedValue: Joi.number().required(),
     receivedBy: Joi.string().required(),

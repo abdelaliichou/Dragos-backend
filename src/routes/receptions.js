@@ -5,7 +5,17 @@ const router = express.Router();
 const { Supplier } = require("../models/supplier");
 
 router.get("/all", async (req, res) => {
-  const reception = await Reception.find();
+  const reception = await Reception.find()
+    .populate({
+      path: "products.receivedItem",
+      model: "products",
+      select: "name price image -_id",
+    })
+    .populate({
+      path: "supplier_id",
+      model: "Supplier",
+      select: "name email contactPerson phoneNumber address -_id",
+    });
   res.send(reception);
 });
 
@@ -19,9 +29,7 @@ router.post("/", async (req, res) => {
   let reception = new Reception({
     arrivalDate: req.body.arrivalDate,
     supplier_id: req.body.supplier_id,
-    receivedItems: req.body.receivedItems,
-    receivedQuantities: req.body.receivedQuantities,
-    receivedPrices: req.body.receivedPrices,
+    products: req.body.products,
     receivedTotal: req.body.receivedTotal,
     receivedValue: req.body.receivedValue,
     receivedBy: req.body.receivedBy,
@@ -45,9 +53,7 @@ router.put("/:id", async (req, res) => {
     {
       arrivalDate: req.body.arrivalDate,
       supplier_id: req.body.supplier_id,
-      receivedItems: req.body.receivedItems,
-      receivedQuantities: req.body.receivedQuantities,
-      receivedPrices: req.body.receivedPrices,
+      products: req.body.products,
       receivedTotal: req.body.receivedTotal,
       receivedValue: req.body.receivedValue,
       receivedBy: req.body.receivedBy,
@@ -78,7 +84,17 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const reception = await Reception.findById(req.params.id);
+  const reception = await Reception.findById(req.params.id)
+    .populate({
+      path: "products.receivedItem",
+      model: "products",
+      select: "name price image -_id",
+    })
+    .populate({
+      path: "supplier_id",
+      model: "Supplier",
+      select: "name email contactPerson phoneNumber address -_id",
+    });
 
   if (!reception)
     return res
