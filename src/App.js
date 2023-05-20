@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 dotenv.config();
 const orders = require("./routes/orders");
 const products = require("./routes/products");
 const categories = require("./routes/categories");
 const payments = require("./routes/payments");
 const promotions = require("./routes/promotions");
+const suppliers = require("./routes/suppliers");
+const receptions = require("./routes/receptions");
 const brands = require("./routes/brands");
 const app = express();
 const userRoute = require("./routes/UserRoutes");
@@ -24,12 +27,19 @@ const globalError = require("./middlewares/errorMiddleware");
 dbConnection();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use("/api/orders", orders);
 app.use("/api/products", products);
 app.use("/api/categories", categories);
 app.use("/api/payments", payments);
 app.use("/api/promotions", promotions);
 app.use("/api/brands", brands);
+app.use("/api/suppliers", suppliers);
+app.use("/api/receptions", receptions);
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 
