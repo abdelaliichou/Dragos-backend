@@ -5,7 +5,7 @@ const router = express.Router();
 const { Supplier } = require("../models/supplier");
 
 router.get("/all", async (req, res) => {
-  const reception = await Reception.find().sort("name");
+  const reception = await Reception.find();
   res.send(reception);
 });
 

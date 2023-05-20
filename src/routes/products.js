@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const { Category } = require("../models/category");
+const { Brand } = require("../models/brand");
 
 router.get("/all", async (req, res) => {
   const products = await Product.find()
@@ -52,6 +53,9 @@ router.post("/", async (req, res) => {
   const category = await Category.findById(req.body.category_id);
   if (!category) return res.status(400).send("Invalid category ID !");
 
+  const brand = await Brand.findById(req.body.category_id);
+  if (!brand) return res.status(400).send("Invalid brand ID !");
+
   let product = new Product({
     name: req.body.name,
     brand_id: req.body.brand_id,
@@ -79,6 +83,9 @@ router.put("/:id", async (req, res) => {
 
   const category = await Category.findById(req.body.category_id);
   if (!category) return res.status(400).send("Invalid category ID !");
+
+  const brand = await Brand.findById(req.body.category_id);
+  if (!brand) return res.status(400).send("Invalid brand ID !");
 
   let product = await Product.findByIdAndUpdate(
     req.params.id,
