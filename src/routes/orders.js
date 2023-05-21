@@ -20,8 +20,42 @@ router.get("/all", async (req, res) => {
 });
 
 // update status
+
+router.post("/status/:id", async (req, res) => {
+  const order_id = req.params.id;
+  const newStatus = req.body.status;
+
+  const order = await Order.findById(order_id);
+
+  if (!order) return res.status(404).send("No order found with this id");
+
+  if (!newStatus) return res.status(404).send("Please enter a status");
+
+  order.status = newStatus;
+
+  result = await order.save();
+
+  res.send(result);
+});
+
 // add note
-// add payment
+
+router.post("/notes/:id", async (req, res) => {
+  const order_id = req.params.id;
+  const newNote = req.body.notes;
+
+  const order = await Order.findById(order_id);
+
+  if (!order) return res.status(404).send("No order found with this id");
+
+  if (!newNote) return res.status(404).send("Please enter a note");
+
+  order.notes = newNote;
+
+  result = await order.save();
+
+  res.send(result);
+});
 
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
