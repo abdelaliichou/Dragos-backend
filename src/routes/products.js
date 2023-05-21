@@ -27,23 +27,115 @@ router.get("/all", async (req, res) => {
   res.send(products);
 });
 
-router.get("/search/:product", async (req, res) => {
-  const productName = req.params.product;
-  const regex = new RegExp(productName, "i"); // Use RegExp with "i" option for case-insensitive search
-  const result_list = await Product.find({ name: { $regex: regex } });
+// GET /products/filter/brand?id=<brand_id>
+router.get("/filter/brand", async (req, res) => {
+  const brandID = req.query.id;
 
-  if (!result_list || result_list.length === 0) {
-    return res.status(400).send("No product found !");
+  if (brandID.length === 0)
+    return res.status(404).send("Please enter the id !");
+
+  const brand = await Brand.findById(brandID);
+
+  if (!brand) return res.status(404).send("Brand not found !");
+
+  try {
+    // Find products matching the brand
+    const products = await Product.find({ brand_id: brandID })
+      .sort("name")
+      .populate({
+        path: "category_id",
+        model: "Category",
+        select: "name image -_id",
+      })
+      .populate({
+        path: "brand_id",
+        model: "Brand",
+        select: "name logo -_id",
+      })
+      .populate({
+        path: "reviews.user",
+        model: "User",
+        select: "name profileImg -_id",
+      });
+
+    res.send(products);
+  } catch (error) {
+    console.error("Error filtering products by category:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
+});
 
-  res.send(result_list);
+// GET /products/filter/category?id=<category_id>
+router.get("/filter/category", async (req, res) => {
+  const categoryID = req.query.id;
 
-  // const productName = req.params.product;
-  // const result_list = await Product.find({ name: productName });
+  if (categoryID.length === 0)
+    return res.status(404).send("Please enter the id !");
 
-  // if (!result_list) return res.status(400).send("No product found !");
+  const category = await Category.findById(categoryID);
 
-  // res.send(result_list);
+  if (!category) return res.status(404).send("Category not found !");
+
+  try {
+    // Find products matching the category
+    const products = await Product.find({ category_id: categoryID })
+      .sort("name")
+      .populate({
+        path: "category_id",
+        model: "Category",
+        select: "name image -_id",
+      })
+      .populate({
+        path: "brand_id",
+        model: "Brand",
+        select: "name logo -_id",
+      })
+      .populate({
+        path: "reviews.user",
+        model: "User",
+        select: "name profileImg -_id",
+      });
+
+    res.send(products);
+  } catch (error) {
+    console.error("Error filtering products by category:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// GET /products?name=<product_name>
+router.get("/search", async (req, res) => {
+  const productName = req.query.name;
+
+  if (productName.length === 0)
+    return res.status(404).send("Please enter a name !");
+  const regex = new RegExp(productName, "i"); // Use RegExp with "i" option for case-insensitive search
+
+  try {
+    // Find products matching the category
+    const products = await Product.find({ name: { $regex: regex } })
+      .sort("name")
+      .populate({
+        path: "category_id",
+        model: "Category",
+        select: "name image -_id",
+      })
+      .populate({
+        path: "brand_id",
+        model: "Brand",
+        select: "name logo -_id",
+      })
+      .populate({
+        path: "reviews.user",
+        model: "User",
+        select: "name profileImg -_id",
+      });
+
+    res.send(products);
+  } catch (error) {
+    console.error("Error filtering products by category:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 router.post("/rating/add", async (req, res) => {
@@ -61,7 +153,7 @@ router.post("/rating/add", async (req, res) => {
   // user should be from the jwt
 
   product.reviews.push({
-    user: "6462879388555585056d8799",
+    user: "64692779fcf6708c6ca5741c",
     review: review,
     rating: rating,
   });
@@ -78,7 +170,7 @@ router.post("/", async (req, res) => {
   const category = await Category.findById(req.body.category_id);
   if (!category) return res.status(400).send("Invalid category ID !");
 
-  const brand = await Brand.findById(req.body.category_id);
+  const brand = await Brand.findById(req.body.brand_id);
   if (!brand) return res.status(400).send("Invalid brand ID !");
 
   let product = new Product({
