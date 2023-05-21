@@ -12,9 +12,11 @@ router.post("/acctivate/:id", async (req, res) => {
   const supplierID = req.params.id;
 
   if (!supplierID)
-    return res.status(404).send("Supplier not found with this id !");
+    return res.status(404).send("Please enter the supplier id !");
 
   const supplier = await Supplier.findById(supplierID);
+
+  if (!supplier) return res.status(404).send("Supplier not found !");
 
   supplier.isActive = true;
 
@@ -28,9 +30,11 @@ router.post("/disacctivate/:id", async (req, res) => {
   const supplierID = req.params.id;
 
   if (!supplierID)
-    return res.status(404).send("Supplier not found with this id !");
+    return res.status(404).send("Please enter the supplier id !");
 
   const supplier = await Supplier.findById(supplierID);
+
+  if (!supplier) return res.status(404).send("Supplier not found !");
 
   supplier.isActive = false;
 

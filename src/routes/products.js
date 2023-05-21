@@ -138,6 +138,39 @@ router.get("/search", async (req, res) => {
   }
 });
 
+// activte product
+// router.post("/acctivate/:id", async (req, res) => {
+//   const productID = req.params.id;
+
+//   if (!productID) return res.status(404).send("Please insert the id !");
+
+//   const product = await Product.findById(productID);
+
+//   if (!product) return res.status(404).send("Product not found !");
+
+//   product.isActive = true;
+
+//   result = await supplier.save();
+
+//   res.send(result);
+// });
+
+// disactivte product
+// router.post("/disacctivate/:id", async (req, res) => {
+//   const supplierID = req.params.id;
+
+//   if (!supplierID)
+//     return res.status(404).send("Supplier not found with this id !");
+
+//   const supplier = await Supplier.findById(supplierID);
+
+//   supplier.isActive = false;
+
+//   result = await supplier.save();
+
+//   res.send(result);
+// });
+
 router.post("/rating/add", async (req, res) => {
   const product_id = req.body.product_id;
   const review = req.body.review;
