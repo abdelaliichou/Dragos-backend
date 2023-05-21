@@ -174,38 +174,32 @@ router.get("/search", async (req, res) => {
   }
 });
 
-// activte product
-// router.post("/acctivate/:id", async (req, res) => {
-//   const productID = req.params.id;
+// get average rating
+router.get("/averageRating/:id", async (req, res) => {
+  const productID = req.params.id;
 
-//   if (!productID) return res.status(404).send("Please insert the id !");
+  if (!productID) return res.status(404).send("Please insert the id !");
 
-//   const product = await Product.findById(productID);
+  const product = await Product.findById(productID);
 
-//   if (!product) return res.status(404).send("Product not found !");
+  if (!product) return res.status(404).send("Product not found !");
 
-//   product.isActive = true;
+  // Calculate the average rating
+  let sumOfRatings = 0;
+  let numberOfReviews = 0;
 
-//   result = await supplier.save();
+  for (const review of product.reviews) {
+    if (review.rating >= 0 && review.rating <= 5) {
+      sumOfRatings += review.rating;
+      numberOfReviews++;
+    }
+  }
 
-//   res.send(result);
-// });
+  const averageRating =
+    numberOfReviews > 0 ? sumOfRatings / numberOfReviews : 0;
 
-// disactivte product
-// router.post("/disacctivate/:id", async (req, res) => {
-//   const supplierID = req.params.id;
-
-//   if (!supplierID)
-//     return res.status(404).send("Supplier not found with this id !");
-
-//   const supplier = await Supplier.findById(supplierID);
-
-//   supplier.isActive = false;
-
-//   result = await supplier.save();
-
-//   res.send(result);
-// });
+  res.send(averageRating + "");
+});
 
 // add rating
 
