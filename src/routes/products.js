@@ -27,6 +27,42 @@ router.get("/all", async (req, res) => {
   res.send(products);
 });
 
+// GET /products/filter/price?price=<product_price>
+router.get("/filter/price", async (req, res) => {
+  let price = req.query.price;
+
+  if (price.length === 0)
+    return res.status(404).send("Please enter the price !");
+
+  price = Number(price);
+
+  try {
+    // Find products matching the price
+    const products = await Product.find({ price: price })
+      .sort("name")
+      .populate({
+        path: "category_id",
+        model: "Category",
+        select: "name image -_id",
+      })
+      .populate({
+        path: "brand_id",
+        model: "Brand",
+        select: "name logo -_id",
+      })
+      .populate({
+        path: "reviews.user",
+        model: "User",
+        select: "name profileImg -_id",
+      });
+
+    res.send(products);
+  } catch (error) {
+    console.error("Error filtering products by category:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // GET /products/filter/brand?id=<brand_id>
 router.get("/filter/brand", async (req, res) => {
   const brandID = req.query.id;
@@ -170,6 +206,8 @@ router.get("/search", async (req, res) => {
 
 //   res.send(result);
 // });
+
+// add rating
 
 router.post("/rating/add", async (req, res) => {
   const product_id = req.body.product_id;
