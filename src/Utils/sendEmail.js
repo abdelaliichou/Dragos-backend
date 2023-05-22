@@ -4,18 +4,16 @@ const nodemailer = require('nodemailer');
 const sendEmail = async (options) => {
   // 1) Create transporter ( service that will send email like "gmail","Mailgun", "mialtrap", sendGrid)
   const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT, // if secure false port = 587, if true port= 465
-    secure: true,
+   service : "gmail",
     auth: {
-    user: process.env.AUTH_EMAIL,
-      pass: process.env.AUTH_PASSWD,
+      user: "sakchiheb007@gmail.com",
+      pass: "rwlviqaiynkxzovz"
     },
   });
 
   // 2) Define email options (like from, to, subject, email content)
   const mailOpts = {
-    from: 'E-shop App <progahmedelsayed@gmail.com>',
+    from: 'Chiheb from NutriBoost E-shop',
     to: options.email,
     subject: options.subject,
     text: options.message,

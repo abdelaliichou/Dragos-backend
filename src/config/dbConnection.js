@@ -3,12 +3,12 @@ const dotenv = require("dotenv");
 
 dotenv.config({ path: ".env" });
 
-const DB_URI =
-  "mongodb+srv://IchouAbd:YwaPDyPTpEsciJLi@dragoscluster.z4xs4u8.mongodb.net/?retryWrites=true&w=majority";
+
+
 
 const dbConnection = () => {
   mongoose
-    .connect(DB_URI)
+    .connect(process.env.DB_URI)
     .then((conn) => {
       console.log(`Database Connected: ${conn.connection.host}`);
     })

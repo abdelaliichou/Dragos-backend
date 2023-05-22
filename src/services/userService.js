@@ -5,57 +5,8 @@ const sharp = require("sharp");
 const factory = require("./handlersFactory");
 const User = require("../models/userModel");
 const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
-const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
-// const SendVerificationEmail = ({ _id, email }, res) => {
-//   const currentUrl = "http://localhost:6000";
-//   const uniquString = uuidv4() + _id;
-//   const mailOptions = {
-//     from: process.env.AUTH_EMAIL,
-//     to: email,
-//     subject: "verifyf your email",
-//     html: `<p>Verify your email to complet the account virification process</p><p>This link will expire in <b>6 hours </b>.</p><p>Press<a href=${
-//       currentUrl + "users/verify/" + _id + "/" + uniquString
-//     }>here</a> to proceed.</p>`,
-//   };
-// };
-// //hash the unisting
-// const saltRounds = 10;
-// bcrypt.hash(uniqueString, saltRounds).then((hashedUniqueString) => {
-//   // set values in userVerification collection
-//   const newVerification = new UserVerification({
-//     userId: _id,
-//     uniqueString: hashedUniqueString,
-//     createdAt: Date.now(),
-//     expiresAt: Date.now() + 21600000,
-//   });
-//   newVerification.save().then(() => {
-//     transporter
-//       .sendMail(mailOptions)
-//       .then()
-//       .catch((error) => {
-//         console.log(error);
-//         res.json({
-//           status: "FAILED",
-//           message: "Verification email failed",
-//         });
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//         res.json({});
-//       });
-//   });
-// });
-
-// // 1)_ this is for the email virifiyer
-// let transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: process.env.AUTH_EMAIL,
-//     pass: process.env.AUTH_PASSWD,
-//   },
-// });
 
 const CreatNewUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -74,15 +25,6 @@ const CreatNewUser = async (req, res) => {
       password: hashedPwd,
     });
     console.log(result);
-    //email virifyer initialisation
-    // transporter.verify((err, success) => {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    //   console.log(`Email verifyer is ready ? `);
-    // });
-    // SendVerificationEmail(result, res);
-    // res.status(201).json({ success: `New user ${name} created!` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

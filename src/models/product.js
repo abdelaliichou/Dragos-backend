@@ -65,7 +65,7 @@ const productSchema = new mongoose.Schema({
   ],
 });
 
-const Product = mongoose.model("products", productSchema);
+const Product = mongoose.model("product", productSchema);
 
 function validateProduct(product) {
   let template = Joi.object().keys({
