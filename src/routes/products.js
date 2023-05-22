@@ -27,18 +27,22 @@ router.get("/all", async (req, res) => {
   res.send(products);
 });
 
-// GET /products/filter/price?price=<product_price>
+// GET /products/filter/price?max=<product_price>&min=<product_price>
 router.get("/filter/price", async (req, res) => {
-  let price = req.query.price;
+  let maxprice = req.query.max;
+  let minprice = req.query.min;
 
-  if (price.length === 0)
+  if (maxprice.length === 0 || minprice.length === 0)
     return res.status(404).send("Please enter the price !");
 
-  price = Number(price);
+  maxprice = Number(maxprice);
+  minprice = Number(minprice);
 
   try {
     // Find products matching the price
-    const products = await Product.find({ price: price })
+    const products = await Product.find({
+      price: { $gte: minprice, $lte: maxprice },
+    })
       .sort("name")
       .populate({
         path: "category_id",
@@ -139,7 +143,7 @@ router.get("/filter/category", async (req, res) => {
   }
 });
 
-// GET /products?name=<product_name>
+// GET /products/search?name=<product_name>
 router.get("/search", async (req, res) => {
   const productName = req.query.name;
 
@@ -202,7 +206,6 @@ router.get("/averageRating/:id", async (req, res) => {
 });
 
 // add rating
-
 router.post("/rating/add", async (req, res) => {
   const product_id = req.body.product_id;
   const review = req.body.review;
