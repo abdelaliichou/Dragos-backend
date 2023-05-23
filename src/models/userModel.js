@@ -51,6 +51,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    LoyalCostumer: {
+      type: Boolean,
+      default: false,
+    },
     active: {
       type: Boolean,
       default: true,
