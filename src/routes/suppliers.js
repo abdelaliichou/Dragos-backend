@@ -7,6 +7,42 @@ router.get("/all", async (req, res) => {
   res.send(supplier);
 });
 
+// activte supplier
+router.post("/acctivate/:id", async (req, res) => {
+  const supplierID = req.params.id;
+
+  if (!supplierID)
+    return res.status(404).send("Please enter the supplier id !");
+
+  const supplier = await Supplier.findById(supplierID);
+
+  if (!supplier) return res.status(404).send("Supplier not found !");
+
+  supplier.isActive = true;
+
+  result = await supplier.save();
+
+  res.send(result);
+});
+
+// disactivte supplier
+router.post("/disacctivate/:id", async (req, res) => {
+  const supplierID = req.params.id;
+
+  if (!supplierID)
+    return res.status(404).send("Please enter the supplier id !");
+
+  const supplier = await Supplier.findById(supplierID);
+
+  if (!supplier) return res.status(404).send("Supplier not found !");
+
+  supplier.isActive = false;
+
+  result = await supplier.save();
+
+  res.send(result);
+});
+
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);

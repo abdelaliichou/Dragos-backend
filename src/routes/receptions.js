@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const { Supplier } = require("../models/supplier");
+const { Product } = require("../models/product");
 
 router.get("/all", async (req, res) => {
   const reception = await Reception.find()
@@ -17,6 +18,34 @@ router.get("/all", async (req, res) => {
       select: "name email contactPerson phoneNumber address -_id",
     });
   res.send(reception);
+});
+
+router.post("/add", async (req, res) => {
+  const reception_id = req.body.reception_id;
+  const receivedItem = req.body.product_id;
+  const receivedPrice = req.body.price;
+  const receivedQuantity = req.body.quantity;
+
+  const reception = await Reception.findById(reception_id);
+  if (!reception) return res.status(400).send("Invalid reception ID !");
+
+  const product = await Product.findById(receivedItem);
+  if (!product) return res.status(400).send("Invalid product ID !");
+
+  if (!receivedPrice) return res.status(400).send("please insert a Price !");
+
+  if (!receivedQuantity)
+    return res.status(400).send("please insert a Quantity !");
+
+  reception.products.push({
+    receivedItem,
+    receivedQuantity,
+    receivedPrice,
+  });
+
+  result = await reception.save();
+
+  res.send(result);
 });
 
 router.post("/", async (req, res) => {

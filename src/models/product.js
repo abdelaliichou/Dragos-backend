@@ -28,7 +28,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   howToUse: {
-    type: String,
+    type: [String],
     required: true,
   },
   image: {
@@ -61,6 +61,12 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      rating: {
+        type: Number,
+        required: false,
+        min: 0,
+        max: 5,
+      },
     },
   ],
 });
@@ -74,7 +80,7 @@ function validateProduct(product) {
     price: Joi.number().required(),
     name: Joi.string().required(),
     overview: Joi.string().required(),
-    howToUse: Joi.string().required(),
+    howToUse: Joi.array().items(Joi.string()).required(),
     rating: Joi.string().required(),
     caution: Joi.string().required(),
     features: Joi.array().items(Joi.string()).required(),
@@ -84,7 +90,8 @@ function validateProduct(product) {
     reviews: Joi.array().items(
       Joi.object({
         user: Joi.objectId().required(),
-        review: Joi.string().required(),
+        review: Joi.string(),
+        rating: Joi.number().min(0).max(5),
       })
     ),
   });
