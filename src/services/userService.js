@@ -8,8 +8,8 @@ const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
-const CreatNewUser = async (req, res) => {
-  const { name, email, password } = req.body;
+const CreatNewManager = async (req, res) => {
+  const { name, email, password , role } = req.body;
   if (!name || !password || !email)
     return res
       .status(400)
@@ -23,6 +23,7 @@ const CreatNewUser = async (req, res) => {
       name: name,
       email: email,
       password: hashedPwd,
+      role : role
     });
     console.log(result);
   } catch (err) {
@@ -42,7 +43,7 @@ const resizeImage = asyncHandler(async (req, res, next) => {
       .resize(600, 600)
       .toFormat("jpeg")
       .jpeg({ quality: 95 })
-      .toFile(`uploads/users/${filename}`);
+      .toFile(`src/uploads/users/${filename}`);
 
     // Save image into our db
     req.body.profileImg = filename;
@@ -162,7 +163,7 @@ const deleteLoggedUserData = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   updateUser,
-  CreatNewUser,
+  CreatNewManager,
   updateLoggedUserPassword,
   getLoggedUserData,
   deleteUser,

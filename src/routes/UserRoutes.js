@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {authenticateUser} = require("../services/authenticUser");
+const addToWishlist = require("../services/wishListService");
+const removeFromWishlist = require("../services/wishListService");
 
 const {
   updateLoggedUserValidator,
@@ -13,7 +14,7 @@ const {
 
 const {
   updateUser,
-  CreatNewUser,
+  CreatNewManager,
   updateLoggedUserPassword,
   getLoggedUserData,
   deleteUser,
@@ -25,7 +26,7 @@ const {
   deleteLoggedUserData,
   updateLoggedUserData
 } = require('../services/userService');
-const { updateCart } = require('../services/cartService');
+const { updateCart , displayCart} = require('../services/cartService');
 const authService = require('../services/authService');
 
 // these routes are for the admin 
@@ -38,6 +39,10 @@ router.put('/changeMyPassword', updateLoggedUserPassword);
 router.put('/updateMe', updateLoggedUserValidator, updateLoggedUserData); //updates name e-mail and phone 
 router.delete('/deleteMe', deleteLoggedUserData); // traje3 l'attribue isActive : False 
 router.post("/cart/update",updateCart) 
+router.get("/cart/displayCart",displayCart) 
+router.post("/cart/addToWishList",addToWishlist) 
+router.post("/cart/removeFromWishList",removeFromWishlist) 
+router.post("/uploadUserImage",uploadUserImage,resizeImage) 
 
 // Admin
 
@@ -48,9 +53,8 @@ router.put(
   changeUserPassword
 );
 router
-  .route('/')
-  .get(getUsers)
-  .post(uploadUserImage, resizeImage, createUserValidator, CreatNewUser);
+  .route('/Adimn/creatManager')
+  .post(createUserValidator, CreatNewManager);
 router
   .route('/:id')
   .get(getUserValidator, getUser)

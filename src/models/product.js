@@ -92,5 +92,5 @@ function validateProduct(product) {
   return template.validate(product);
 }
 
-exports.Product = Product;
+module.exports = Product;
 exports.validate = validateProduct;
