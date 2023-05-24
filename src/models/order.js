@@ -87,5 +87,8 @@ function validateOrder(order) {
   return template.validate(order);
 }
 
-exports.Order = Order;
-exports.validate = validateOrder;
+
+module.exports = {
+  Order,
+  validateOrder
+}

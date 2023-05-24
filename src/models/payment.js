@@ -29,5 +29,7 @@ function validatePayment(payment) {
   return template.validate(payment);
 }
 
-exports.Payment = Payment;
-exports.validate = validatePayment;
+module.exports = {
+  Payment,
+  validatePayment
+}

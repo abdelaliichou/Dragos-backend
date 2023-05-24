@@ -1,6 +1,6 @@
 const express = require('express');
 const user = require("../models/userModel");
-const Product = require("../models/product");
+const {Product}= require("../models/product");
 
 const validateProductId = async (product_id) => {
   try {
@@ -62,7 +62,8 @@ const updateCart = async (req, res) => {
 const displayCart = async (req, res) => {
   try {
     // Retrieve the user's cart
-    const cart = req.user.cart;
+    const cart = await req.user.cart 
+  
     
     // If the cart is empty, return an empty response
     if (cart.length === 0) {
@@ -74,13 +75,15 @@ const displayCart = async (req, res) => {
     let totalPrice = 0;
     // Loop through the cart and retrieve product details for each item
     for (const item of cart) {
-      const product = await Product.findById(item.product_id);
+      const product = await Product.findById(item.product_id)
+      
       
       if (product) {
         const cartItem = {
           product_id: product._id,
           name: product.name,
           price: product.price,
+          Img : product.image, 
           quantity: item.quantity,
         };
         
@@ -90,6 +93,9 @@ const displayCart = async (req, res) => {
         totalPrice += subtotal;
       }
     }
+
+    
+   
     
     // Return the cart items
     res.json({ cart: cartItems , totalPrice });

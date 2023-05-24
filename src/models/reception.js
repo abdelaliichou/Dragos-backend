@@ -67,5 +67,7 @@ function validateReception(reception) {
   return template.validate(reception);
 }
 
-exports.Reception = Reception;
-exports.validate = validateReception;
+module.exports = {
+  Reception,
+  validateReception
+}

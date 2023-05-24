@@ -50,5 +50,7 @@ function validatePromotion(promotion) {
   return template.validate(promotion);
 }
 
-exports.Promotion = Promotion;
-exports.validate = validatePromotion;
+module.exports = {
+  Promotion,
+  validatePromotion
+}

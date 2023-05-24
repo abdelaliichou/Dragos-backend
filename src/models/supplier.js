@@ -43,5 +43,7 @@ function validateSupplier(supplier) {
   return template.validate(supplier);
 }
 
-exports.Supplier = Supplier;
-exports.validate = validateSupplier;
+module.exports = {
+  Supplier,
+  validateSupplier
+}

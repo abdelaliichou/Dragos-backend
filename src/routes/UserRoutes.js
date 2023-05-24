@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const addToWishlist = require("../services/wishListService");
-const removeFromWishlist = require("../services/wishListService");
+const { addToWishlist,removeFromWishlist} = require("../services/wishListService");
 
 const {
   updateLoggedUserValidator,
@@ -20,14 +19,13 @@ const {
   deleteUser,
   changeUserPassword,
   getUser,
-  getUsers,
   uploadUserImage,
   resizeImage,
   deleteLoggedUserData,
   updateLoggedUserData
 } = require('../services/userService');
 const { updateCart , displayCart} = require('../services/cartService');
-const authService = require('../services/authService');
+const authService = require('../services/AuthService');
 
 // these routes are for the admin 
 // CRUD operation is allowed to manager or admin roles only 
@@ -40,8 +38,8 @@ router.put('/updateMe', updateLoggedUserValidator, updateLoggedUserData); //upda
 router.delete('/deleteMe', deleteLoggedUserData); // traje3 l'attribue isActive : False 
 router.post("/cart/update",updateCart) 
 router.get("/cart/displayCart",displayCart) 
-router.post("/cart/addToWishList",addToWishlist) 
-router.post("/cart/removeFromWishList",removeFromWishlist) 
+router.post("/addToWishList",addToWishlist) 
+router.post("/removeFromWishList",removeFromWishlist) 
 router.post("/uploadUserImage",uploadUserImage,resizeImage) 
 
 // Admin

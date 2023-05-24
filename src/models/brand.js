@@ -23,5 +23,7 @@ function validateBrand(brand) {
   return template.validate(brand);
 }
 
-exports.Brand = Brand;
-exports.validate = validateBrand;
+module.exports = {
+  validateBrand,
+  Brand
+}

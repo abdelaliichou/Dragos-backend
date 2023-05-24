@@ -1,11 +1,40 @@
-const { validate, Product } = require("../models/product");
+const { validate , Product } = require("../models/product");
+
 const express = require("express");
 const router = express.Router();
+const authService =require("../services/AuthService");
 
 const { Category } = require("../models/category");
 const { Brand } = require("../models/brand");
 
-router.get("/all", async (req, res) => {
+
+// add rating
+
+router.post("/rating/add",authService.protect, async (req, res) => {
+  const product_id = req.body.product_id;
+  const review = req.body.review;
+  let rating = req.body.rating;
+
+  const product = await Product.findById(product_id);
+  if (!product) return res.status(400).send("Invalid product ID !");
+
+  if (!review) return res.status(400).send("please insert a Review !");
+
+  if (!rating) rating = 0;
+
+  // user should be from the jwt
+
+  product.reviews.push({
+    user: "64692779fcf6708c6ca5741c",
+    review: review,
+    rating: rating,
+  });
+
+  result = await product.save();
+
+  res.send(result);
+});
+router.get("/all",authService.protect ,async (req, res) => {
   const products = await Product.find()
     .sort("name")
     .populate({
@@ -28,7 +57,7 @@ router.get("/all", async (req, res) => {
 });
 
 // GET /products/filter/price?max=<product_price>&min=<product_price>
-router.get("/filter/price", async (req, res) => {
+router.get("/filter/price",authService.protect, async (req, res) => {
   let maxprice = req.query.max;
   let minprice = req.query.min;
 
@@ -68,7 +97,7 @@ router.get("/filter/price", async (req, res) => {
 });
 
 // GET /products/filter/brand?id=<brand_id>
-router.get("/filter/brand", async (req, res) => {
+router.get("/filter/brand",authService.protect, async (req, res) => {
   const brandID = req.query.id;
 
   if (brandID.length === 0)
@@ -106,7 +135,7 @@ router.get("/filter/brand", async (req, res) => {
 });
 
 // GET /products/filter/category?id=<category_id>
-router.get("/filter/category", async (req, res) => {
+router.get("/filter/category",authService.protect, async (req, res) => {
   const categoryID = req.query.id;
 
   if (categoryID.length === 0)
@@ -144,7 +173,7 @@ router.get("/filter/category", async (req, res) => {
 });
 
 // GET /products/search?name=<product_name>
-router.get("/search", async (req, res) => {
+router.get("/search",authService.protect, async (req, res) => {
   const productName = req.query.name;
 
   if (productName.length === 0)
@@ -179,7 +208,7 @@ router.get("/search", async (req, res) => {
 });
 
 // get average rating
-router.get("/averageRating/:id", async (req, res) => {
+router.get("/averageRating/:id",authService.protect, async (req, res) => {
   const productID = req.params.id;
 
   if (!productID) return res.status(404).send("Please insert the id !");
@@ -205,33 +234,9 @@ router.get("/averageRating/:id", async (req, res) => {
   res.send(averageRating + "");
 });
 
-// add rating
-router.post("/rating/add", async (req, res) => {
-  const product_id = req.body.product_id;
-  const review = req.body.review;
-  let rating = req.body.rating;
 
-  const product = await Product.findById(product_id);
-  if (!product) return res.status(400).send("Invalid product ID !");
 
-  if (!review) return res.status(400).send("please insert a Review !");
-
-  if (!rating) rating = 0;
-
-  // user should be from the jwt
-
-  product.reviews.push({
-    user: "64692779fcf6708c6ca5741c",
-    review: review,
-    rating: rating,
-  });
-
-  result = await product.save();
-
-  res.send(result);
-});
-
-router.post("/", async (req, res) => {
+router.post("/",[authService.protect,authService.allowedTo("Admin","manager")], async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -262,7 +267,7 @@ router.post("/", async (req, res) => {
   res.send(result);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id",[authService.protect,authService.allowedTo("Admin","manager")], async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -300,7 +305,7 @@ router.put("/:id", async (req, res) => {
   res.send(product);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [authService.protect,authService.allowedTo("Admin","manager")],async (req, res) => {
   const product = await Product.findByIdAndRemove(req.params.id);
 
   if (!product)
@@ -309,7 +314,7 @@ router.delete("/:id", async (req, res) => {
   res.send(product);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authService.protect,async (req, res) => {
   const product = await Product.findById(req.params.id)
     .populate({
       path: "category_id",

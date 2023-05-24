@@ -147,7 +147,9 @@ const protect = asyncHandler(async (req, res, next) => {
     req.user = currentUser;
     next();
   }
-
+else{
+  res.json({"message":"no token found"});
+}
 });
 
 // @desc    Authorization (User Permissions)

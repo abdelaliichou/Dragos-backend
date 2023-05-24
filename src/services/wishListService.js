@@ -1,5 +1,5 @@
 
-const Product = require("../models/product");
+const {Product} = require("../models/product");
 
 const addToWishlist = async (req, res) => {
   try {
@@ -47,5 +47,5 @@ const removeFromWishlist = async (req, res) => {
     }
   };
   
-module.exports = addToWishlist;
-module.exports = removeFromWishlist;
+module.exports ={ addToWishlist,removeFromWishlist};
+

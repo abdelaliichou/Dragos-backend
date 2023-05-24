@@ -23,5 +23,7 @@ function validateCategory(category) {
   return template.validate(category);
 }
 
-exports.Category = Category;
-exports.validate = validateCategory;
+module.exports = {
+  Category,
+  validateCategory
+}
