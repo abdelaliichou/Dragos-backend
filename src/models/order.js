@@ -74,7 +74,6 @@ function validateOrder(order) {
     zip: Joi.string().required(),
     date: Joi.date().required(),
     total: Joi.number().required(),
-    user: Joi.objectId().required(),
     payment_id: Joi.objectId().required(),
     products: Joi.array().items(
       Joi.object({

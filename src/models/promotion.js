@@ -22,14 +22,10 @@ const promotionSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  Effected_products: [
-    {
-      product_id: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  Effected_products: {
+    type: [String],
+    required: true,
+  },
 });
 
 const Promotion = mongoose.model("promotion", promotionSchema);
@@ -40,11 +36,7 @@ function validatePromotion(promotion) {
     start_date: Joi.date().required(),
     end_date: Joi.date().required(),
     discount: Joi.number().required(),
-    Effected_products: Joi.array().items(
-      Joi.object({
-        product_id: Joi.objectId().required(),
-      })
-    ),
+    Effected_products: Joi.array().items(Joi.objectId()).required(),
   });
 
   return template.validate(promotion);

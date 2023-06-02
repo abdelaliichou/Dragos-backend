@@ -6,7 +6,7 @@ const { Product } = require("../models/product");
 
 router.get("/all", async (req, res) => {
   const promotion = await Promotion.find().sort("name").populate({
-    path: "Effected_products.product_id",
+    path: "Effected_products",
     model: "products",
     select: "name image price discription -_id",
   });
@@ -26,8 +26,8 @@ router.post("/", async (req, res) => {
   const invalidProductIds = [];
 
   for (let i = 0; i < productIds.length; i++) {
-    const product = await Product.findById(productIds[i].product_id);
-    if (!product) invalidProductIds.push(productIds[i].product_id);
+    const product = await Product.findById(productIds[i]);
+    if (!product) invalidProductIds.push(productIds[i]);
   }
 
   if (invalidProductIds.length > 0) {
@@ -105,7 +105,7 @@ router.delete("/:id", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const promotion = await Promotion.findById(req.params.id).populate({
-    path: "Effected_products.product_id",
+    path: "Effected_products",
     model: "products",
     select: "name image price discription -_id",
   });

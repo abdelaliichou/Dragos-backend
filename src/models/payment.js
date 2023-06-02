@@ -21,7 +21,6 @@ const Payment = mongoose.model("payment", paymentSchema);
 
 function validatePayment(payment) {
   let template = Joi.object().keys({
-    user: Joi.objectId().required(),
     type: Joi.string().required(),
     date: Joi.date().required(),
   });

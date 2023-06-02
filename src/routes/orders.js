@@ -95,7 +95,7 @@ router.post("/", async (req, res) => {
     zip: req.body.zip,
     date: req.body.date,
     total: req.body.total,
-    user: req.body.user,
+    user: "jwtUser",
     payment_id: req.body.payment_id,
     products: req.body.products,
   });
@@ -145,7 +145,7 @@ router.put("/:id", async (req, res) => {
       zip: req.body.zip,
       date: req.body.date,
       total: req.body.total,
-      user: req.body.user,
+      user: "jwtUser",
       payment_id: req.body.payment_id,
       products: req.body.products,
     },
