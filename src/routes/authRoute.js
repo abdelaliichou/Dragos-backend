@@ -1,5 +1,5 @@
 const express = require("express");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const {
   signupValidator,
@@ -17,58 +17,55 @@ const UserVerification = require("../models/userVerification");
 const { authenticateUser } = require("../services/authenticUser");
 const router = express.Router();
 
-router.post('/signup', signupValidator, signup);
-router.post('/login', loginValidator, login);
-router.post('/forgotPassword', forgotPassword);
-router.post('/verifyResetCode', verifyPassResetCode);
-router.put('/resetPassword', resetPassword);
-router.post('/verification/:userId', async (req, res) => {
-  const { userId } = req.params;  
+router.post("/signup", signupValidator, signup);
+router.post("/login", loginValidator, login);
+router.post("/forgotPassword", forgotPassword);
+router.post("/verifyResetCode", verifyPassResetCode);
+router.put("/resetPassword", resetPassword);
+router.post("/verification/:userId", async (req, res) => {
+  const Id = req.params.userId;
   try {
-    const result = await UserVerification.find({ userId : userId }).exec();
-      if(!result){
-        res.json({
-          message: 'verification Qury error',
-        });
-      }
-    if (result && result.length > 0 ) {
-      
+    const result = await UserVerification.findOne({ userId: Id }).exec();
+    if (!result) {
+      res.json({
+        message: "verification Qury error",
+      });
+    }
+    if (result && result.length > 0) {
       // crossOriginIsolated.log(userId);
       // const hashedUniqueStr = result[0].uniqueString;
-      const  expiresAt  = result[0].expiresAt;
-      
+      const expiresAt = result[0].expiresAt;
 
       if (expiresAt < Date.now()) {
-        await UserVerification.deleteOne({ userId : userId });
+        await UserVerification.deleteOne({ userId: userId });
         res.json({
-          message: 'The verification link has expired',
+          message: "The verification link has expired",
         });
       } else {
         // const isMatch = await bcrypt.compare(uniqueString, hashedUniqueStr);
-        
-          await User.findOneAndUpdate(
-            { _id: userId },
-            { $set: { verfied: true } },
-            { new: true }
-          );
-          await UserVerification.deleteOne({ userId: userId });
-          res.json({
-            message: 'Account verified successfully !!!',
-          });
-        
+
+        await User.findOneAndUpdate(
+          { _id: userId },
+          { $set: { verfied: true } },
+          { new: true }
+        );
+        await UserVerification.deleteOne({ userId: userId });
+        res.json({
+          message: "Account verified successfully !!!",
+        });
       }
     } else {
-      
       res.json({
-        status: 'Failed',
-        message: 'The user verification record does not exist or has already been verified',
+        status: "Failed",
+        message:
+          "The user verification record does not exist or has already been verified",
       });
     }
   } catch (err) {
     console.log(err);
     res.json({
-      status: 'Failed',
-      message: 'An error occurred while processing the request',
+      status: "Failed",
+      message: "An error occurred while processing the request",
     });
   }
 });
@@ -136,7 +133,7 @@ router.post('/verification/:userId', async (req, res) => {
 //           bcrypt.compare(UniqueString ,hashedUniqueStr)
 //           .then((result)=>{
 //             if(result){
-//               //setting the isVerified attribute in user to True 
+//               //setting the isVerified attribute in user to True
 // User.updateOne({_id :userId },{verfied : true})
 // .then(
 //   UserVerification.deleteOne({userId})
@@ -158,13 +155,13 @@ router.post('/verification/:userId', async (req, res) => {
 //           "status" : "Failed",
 //           "message" : "the user verification record doesn't exist or has already been verified "
 //         })
-        
+
 //       }
 //     })
 //     .catch(() => {
-//       res.json({ 
-//         "status": "Failed", 
-//         "message": "user verification record not found" 
+//       res.json({
+//         "status": "Failed",
+//         "message": "user verification record not found"
 //       });
 //     });
 // });
