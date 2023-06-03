@@ -8,7 +8,7 @@ router.get("/all", async (req, res) => {
   const order = await Order.find()
     .populate({
       path: "products.product_id",
-      model: "products",
+      model: "product",
       select: "name price image -_id",
     })
     .populate({

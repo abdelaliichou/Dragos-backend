@@ -9,7 +9,7 @@ router.get("/all", async (req, res) => {
   const reception = await Reception.find()
     .populate({
       path: "products.receivedItem",
-      model: "products",
+      model: "product",
       select: "name price image -_id",
     })
     .populate({
