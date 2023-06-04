@@ -1,6 +1,7 @@
 const { validate, Supplier } = require("../models/supplier");
 const express = require("express");
 const router = express.Router();
+const authService = require('../services/AuthService');
 
 router.get("/all", async (req, res) => {
   const supplier = await Supplier.find().sort("name");
@@ -8,7 +9,7 @@ router.get("/all", async (req, res) => {
 });
 
 // activte supplier
-router.post("/acctivate/:id", async (req, res) => {
+router.post("/acctivate/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const supplierID = req.params.id;
 
   if (!supplierID)
@@ -26,7 +27,7 @@ router.post("/acctivate/:id", async (req, res) => {
 });
 
 // disactivte supplier
-router.post("/disacctivate/:id", async (req, res) => {
+router.post("/disacctivate/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const supplierID = req.params.id;
 
   if (!supplierID)
@@ -43,7 +44,7 @@ router.post("/disacctivate/:id", async (req, res) => {
   res.send(result);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -61,7 +62,7 @@ router.post("/", async (req, res) => {
   res.send(result);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -88,7 +89,7 @@ router.put("/:id", async (req, res) => {
   res.send(supplier);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const supplier = await Supplier.findByIdAndRemove(req.params.id);
 
   if (!supplier)
@@ -99,7 +100,7 @@ router.delete("/:id", async (req, res) => {
   res.send(supplier);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const supplier = await Supplier.findById(req.params.id);
 
   if (!supplier)

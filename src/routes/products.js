@@ -25,7 +25,7 @@ router.post("/rating/add",authService.protect, async (req, res) => {
   // user should be from the jwt
 
   product.reviews.push({
-    user: "64692779fcf6708c6ca5741c",
+    user: req.user._id,
     review: review,
     rating: rating,
   });

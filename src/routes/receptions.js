@@ -1,11 +1,11 @@
 const { validate, Reception } = require("../models/reception");
 const express = require("express");
 const router = express.Router();
-
+const authService = require('../services/AuthService');
 const { Supplier } = require("../models/supplier");
 const { Product } = require("../models/product");
 
-router.get("/all", async (req, res) => {
+router.get("/all", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const reception = await Reception.find()
     .populate({
       path: "products.receivedItem",
@@ -20,7 +20,7 @@ router.get("/all", async (req, res) => {
   res.send(reception);
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const reception_id = req.body.reception_id;
   const receivedItem = req.body.product_id;
   const receivedPrice = req.body.price;
@@ -48,7 +48,7 @@ router.post("/add", async (req, res) => {
   res.send(result);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
   res.send(result);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -101,7 +101,7 @@ router.put("/:id", async (req, res) => {
   res.send(reception);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const reception = await Reception.findByIdAndRemove(req.params.id);
 
   if (!reception)
@@ -112,7 +112,7 @@ router.delete("/:id", async (req, res) => {
   res.send(reception);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", [authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const reception = await Reception.findById(req.params.id)
     .populate({
       path: "products.receivedItem",

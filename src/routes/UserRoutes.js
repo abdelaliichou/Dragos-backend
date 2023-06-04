@@ -35,16 +35,17 @@ router.use(authService.protect); //protect makes sure user is logged in by token
 router.get('/getMe', getLoggedUserData, getUser);
 router.put('/changeMyPassword', updateLoggedUserPassword);
 router.put('/updateMe', updateLoggedUserValidator, updateLoggedUserData); //updates name e-mail and phone 
-router.delete('/deleteMe', deleteLoggedUserData); // traje3 l'attribue isActive : False 
+// traje3 l'attribue isActive : False 
 router.post("/cart/update",updateCart) 
 router.get("/cart/displayCart",displayCart) 
 router.post("/addToWishList",addToWishlist) 
 router.post("/removeFromWishList",removeFromWishlist) 
-router.post("/uploadUserImage",uploadUserImage,resizeImage) 
+router.post("/uploadUserImage",resizeImage,uploadUserImage) 
 
 // Admin
 
 router.use(authService.allowedTo('admin', 'manager'));
+router.delete('/deleteMe', deleteLoggedUserData); 
 router.put(
   '/changePassword/:id',
   changeUserPasswordValidator,

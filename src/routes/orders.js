@@ -1,10 +1,11 @@
 const { validate, Order } = require("../models/order");
 const express = require("express");
 const router = express.Router();
+const authService = require('../services/AuthService');
 
 const { Product } = require("../models/product");
-
-router.get("/all", async (req, res) => {
+ 
+router.get("/all",[authService.protect,authService.allowedTo('admin', 'manager')],async (req, res) => {
   const order = await Order.find()
     .populate({
       path: "products.product_id",
@@ -21,7 +22,7 @@ router.get("/all", async (req, res) => {
 
 // update status
 
-router.post("/status/:id", async (req, res) => {
+router.post("/status/:id",[authService.protect,authService.allowedTo('admin', 'manager')] ,async (req, res) => {
   const order_id = req.params.id;
   const newStatus = req.body.status;
 
@@ -40,7 +41,7 @@ router.post("/status/:id", async (req, res) => {
 
 // add note
 
-router.post("/notes/:id", async (req, res) => {
+router.post("/notes/:id",[authService.protect,authService.allowedTo('admin', 'manager')], async (req, res) => {
   const order_id = req.params.id;
   const newNote = req.body.notes;
 
@@ -57,7 +58,9 @@ router.post("/notes/:id", async (req, res) => {
   res.send(result);
 });
 
-router.post("/", async (req, res) => {
+//TODO  check what the fuck is this 
+
+router.post("/", authService.protect ,async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -105,7 +108,9 @@ router.post("/", async (req, res) => {
   res.send(result);
 });
 
-router.put("/:id", async (req, res) => {
+//TODO waaach dir hadi rani dertlha allow ll admin w manager na7ihom la Kant machi hakdak
+
+router.put("/:id", [authService.protect,authService.allowedTo('admin', 'manager')] ,async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 

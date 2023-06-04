@@ -1,14 +1,13 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const nodemailer = require("nodemailer");
 const UserVerification = require("../models/userVerification");
 const asyncHandler = require('express-async-handler');
 const ApiError = require('../utils/apiError');
 const sendEmail = require('../utils/sendEmail');
 const createToken = require('../Utils/createToken.js');
 const User = require('../models/userModel');
-const {v4 : uuidv4} = require("uuid");
+
 
 // @desc    Signup
 // @route   GET /api/v1/auth/signup
@@ -23,14 +22,10 @@ const signup = asyncHandler(async (req, res, next) => {
   });
   // 2- Generate token and send verification e-mail
   const NewUser = await user.save();
-  // const ID = NewUser._id; 
   const EMAIL = NewUser.email;
-  const currentUrl = "http://localhost:6000/";
-  
-  const token = createToken(user._id);
-  
-  
-  const message = `Hi ${user.name},\n here is your Link to verify your Account.\n ${ currentUrl +"api/auth/verification/"+ NewUser._id}`;
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  const currentUrl = fullUrl.replace('/signup', '/verification/');
+  const message = `Hi ${user.name},\n here is your Link to verify your Account.\n ${ currentUrl + NewUser._id}`;
       const newVerification = new UserVerification({
       userId: NewUser._id,
       createdAt: Date.now(),

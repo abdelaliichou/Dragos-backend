@@ -1,4 +1,3 @@
-
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -35,6 +34,7 @@ app.use("/api/promotions", promotions);
 app.use("/api/brands", brands);
 app.use("/api/suppliers", suppliers);
 app.use("/api/receptions", receptions);
+
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 

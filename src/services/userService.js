@@ -9,7 +9,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
 const CreatNewManager = async (req, res) => {
-  const { name, email, password , role } = req.body;
+  const { name, email, password  } = req.body;
   if (!name || !password || !email)
     return res
       .status(400)
@@ -23,7 +23,7 @@ const CreatNewManager = async (req, res) => {
       name: name,
       email: email,
       password: hashedPwd,
-      role : role
+      role : "manager"
     });
     console.log(result);
   } catch (err) {
