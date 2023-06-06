@@ -19,6 +19,9 @@ const signup = asyncHandler(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
+    address : req.body.address,
+    city : req.body.city,
+    state : req.body.state
   });
   // 2- Generate token and send verification e-mail
   const NewUser = await user.save();

@@ -43,7 +43,7 @@ const resizeImage = asyncHandler(async (req, res, next) => {
       .resize(600, 600)
       .toFormat("jpeg")
       .jpeg({ quality: 95 })
-      .toFile(`src/uploads/users/${filename}`);
+      .toFile(`src/uploads/Users/${filename}`);
 
     // Save image into our db
     req.body.profileImg = filename;
@@ -70,11 +70,12 @@ const updateUser = asyncHandler(async (req, res, next) => {
     req.params.id,
     {
       name: req.body.name,
-      slug: req.body.slug, // this is to prevente special caracteres
-      phone: req.body.phone,
+      address : req.body.address,
+      city : req.body.city,
+      state : req.body.state,
       email: req.body.email,
       profileImg: req.body.profileImg,
-      role: req.body.role,
+      
     },
     {
       new: true,
@@ -142,8 +143,11 @@ const updateLoggedUserData = async (req, res, next) => {
     req.user._id,
     {
       name: req.body.name,
+      address : req.body.address,
+      city : req.body.city,
+      state : req.body.state,
       email: req.body.email,
-      phone: req.body.phone,
+      profileImg: req.body.profileImg,
     },
     { new: true }
   );

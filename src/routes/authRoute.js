@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const User = require("../models/userModel");
 const {
   signupValidator,
@@ -14,17 +15,18 @@ const {
 } = require("../services/AuthService");
 const UserVerification = require("../models/userVerification");
 const router = express.Router();
+const filePath = path.resolve(__dirname, '..', 'views', 'verified.html');
 
 router.post('/signup', signupValidator, signup);
 router.post('/login', loginValidator, login);
 router.post('/forgotPassword', forgotPassword);
 router.post('/verifyResetCode', verifyPassResetCode);
 router.put('/resetPassword', resetPassword);
-router.post('/verification/:userId', async (req, res) => {
+router.get('/verification/:userId', async (req, res) => {
   const { userId } = req.params;  
   try {
     const result = await UserVerification.find({ userId : userId }).exec();
-      if(!result){
+    if(!result){
         res.json({
           message: 'verification Qury error',
         });
@@ -37,18 +39,13 @@ router.post('/verification/:userId', async (req, res) => {
           message: 'The verification link has expired',
         });
       } else {
-        // const isMatch = await bcrypt.compare(uniqueString, hashedUniqueStr);
-        
           await User.findOneAndUpdate(
             { _id: userId },
             { $set: { verfied: true } },
             { new: true }
           );
           await UserVerification.deleteOne({ userId: userId });
-          res.json({
-            message: 'Account verified successfully !!!',
-          });
-        
+          res.sendFile(filePath);
       }
     } else {
       
