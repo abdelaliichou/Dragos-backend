@@ -43,7 +43,7 @@ router.put("/updateMe", updateLoggedUserValidator, updateLoggedUserData); //upda
 router.post("/cart/update", updateCart);
 router.get("/cart/displayCart", displayCart);
 router.post("/addToWishList", addToWishlist);
-router.post("/getWishList", getWishlist);
+router.get("/getWishList", getWishlist);
 router.post("/removeFromWishList", removeFromWishlist);
 router.post("/uploadUserImage", resizeImage, uploadUserImage);
 

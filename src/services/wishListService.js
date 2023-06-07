@@ -11,12 +11,12 @@ const addToWishlist = async (req, res) => {
     }
 
     // Add the product ID to the user's wishlist if it doesn't already exist
-    if (!req.user.wishlist.includes(product_id)) {
-      req.user.wishlist.push(product_id);
+    if (!req.user.wishlist.includes(product)) {
+      req.user.wishlist.push(product);
       await req.user.save();
     }
 
-    res.json({ message: "Product added to wishlist" });
+    res.status(200).json({ message: "Product added to wishlist" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -25,7 +25,8 @@ const addToWishlist = async (req, res) => {
 
 const getWishlist = async (req, res) => {
   try {
-    res.status(200).send(req.user.wishlist);
+    const list = req.user.wishlist;
+    res.status(200).json({ data: list });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
