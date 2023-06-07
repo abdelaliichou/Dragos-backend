@@ -90,10 +90,6 @@ const displayCart = async (req, res) => {
         totalPrice += subtotal;
       }
     }
-
-    
-   
-    
     // Return the cart items
     res.json({ cart: cartItems , totalPrice });
   } catch (error) {
