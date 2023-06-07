@@ -22,7 +22,7 @@ const {
   uploadUserImage,
   resizeImage,
   deleteLoggedUserData,
-  updateLoggedUserData
+  updateLoggedUserData,
 } = require('../services/userService');
 const { updateCart , displayCart} = require('../services/cartService');
 const authService = require('../services/AuthService');
@@ -35,11 +35,11 @@ router.use(authService.protect); //protect makes sure user is logged in by token
 router.get('/getMe', getLoggedUserData, getUser);
 router.put('/changeMyPassword', updateLoggedUserPassword);
 router.put('/updateMe', updateLoggedUserValidator, updateLoggedUserData); //updates name e-mail and phone 
-// traje3 l'attribue isActive : False 
 router.post("/cart/update",updateCart) 
 router.get("/cart/displayCart",displayCart) 
 router.post("/addToWishList",addToWishlist) 
 router.post("/removeFromWishList",removeFromWishlist) 
+
 router.post("/uploadUserImage",resizeImage,uploadUserImage) 
 
 // Admin

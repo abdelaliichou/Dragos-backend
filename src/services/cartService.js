@@ -63,13 +63,10 @@ const displayCart = async (req, res) => {
   try {
     // Retrieve the user's cart
     const cart = await req.user.cart 
-  
-    
     // If the cart is empty, return an empty response
     if (cart.length === 0) {
       return res.json({ message: "Cart is empty" });
     }
-    
     // Prepare an array to store the cart items
     const cartItems = [];
     let totalPrice = 0;
