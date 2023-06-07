@@ -7,7 +7,7 @@ const { Product } = require("../models/product");
 router.get("/all", async (req, res) => {
   const promotion = await Promotion.find().sort("name").populate({
     path: "Effected_products.product_id",
-    model: "products",
+    model: "product",
     select: "name image price discription -_id",
   });
   res.send(promotion);
@@ -106,7 +106,7 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const promotion = await Promotion.findById(req.params.id).populate({
     path: "Effected_products.product_id",
-    model: "products",
+    model: "product",
     select: "name image price discription -_id",
   });
 
