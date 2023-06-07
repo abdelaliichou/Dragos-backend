@@ -23,10 +23,29 @@ const addToWishlist = async (req, res) => {
   }
 };
 
-const getWishlist = async (req, res) => {
+const getWishList = async (req, res) => {
   try {
-    const list = req.user.wishlist;
-    res.status(200).json({ data: list });
+    const wishList = await req.user.wishlist;
+    // If the cart is empty, return an empty response
+    if (!wishList) {
+      return res.json({ message: "wishlist is empty" });
+    }
+
+    // Prepare an array to store the cart items
+    const wishListItems = [];
+    // Loop through the cart and retrieve product details for each item
+    for (const item of wishList) {
+      // const product = await product.findById(item._id);
+      const product = await Product.findById(item);
+      if (item) {
+        const wishListItem = {
+          product: product,
+        };
+        wishListItems.push(wishListItem);
+      }
+    }
+    // Return the items
+    res.json({ wishList: wishListItems });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -57,4 +76,4 @@ const removeFromWishlist = async (req, res) => {
   }
 };
 
-module.exports = { addToWishlist, removeFromWishlist, getWishlist };
+module.exports = { addToWishlist, removeFromWishlist, getWishList };
