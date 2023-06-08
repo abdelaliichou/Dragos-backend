@@ -1,4 +1,4 @@
-const { validate, Reception } = require("../models/reception");
+const { validateReception, Reception } = require("../models/reception");
 const express = require("express");
 const router = express.Router();
 const authService = require("../services/AuthService");
@@ -60,7 +60,7 @@ router.post(
   "/",
   [authService.protect, authService.allowedTo("admin", "manager")],
   async (req, res) => {
-    const { error } = validate(req.body);
+    const { error } = validateReception(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     const supplier = await Supplier.findById(req.body.supplier_id);
@@ -86,7 +86,7 @@ router.put(
   "/:id",
   [authService.protect, authService.allowedTo("admin", "manager")],
   async (req, res) => {
-    const { error } = validate(req.body);
+    const { error } = validateReception(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     const supplier = await Supplier.findById(req.body.supplier_id);

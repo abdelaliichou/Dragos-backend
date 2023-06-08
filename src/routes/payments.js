@@ -1,4 +1,4 @@
-const { validate, Payment } = require("../models/payment");
+const { validatePayment, Payment } = require("../models/payment");
 const express = require("express");
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.get("/all", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validatePayment(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const user = await User.findById(req.body.user);

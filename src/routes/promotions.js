@@ -1,4 +1,4 @@
-const { validate, Promotion } = require("../models/promotion");
+const { validatePromotion, Promotion } = require("../models/promotion");
 const express = require("express");
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get("/all", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validatePromotion(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   // Check if all Effected_products are valid product IDs
@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validatePromotion(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   // Check if all Effected_products are valid product IDs

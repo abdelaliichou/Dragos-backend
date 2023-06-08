@@ -1,4 +1,4 @@
-const { validate, Order } = require("../models/order");
+const { validateOrder, Order } = require("../models/order");
 const express = require("express");
 const router = express.Router();
 const authService = require("../services/AuthService");
@@ -73,7 +73,7 @@ router.post(
 //TODO  check what the fuck is this
 
 router.post("/", authService.protect, async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   // Check if all products are valid product IDs
@@ -126,7 +126,7 @@ router.put(
   "/:id",
   [authService.protect, authService.allowedTo("admin", "manager")],
   async (req, res) => {
-    const { error } = validate(req.body);
+    const { error } = validateOrder(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     // Check if all products are valid product IDs

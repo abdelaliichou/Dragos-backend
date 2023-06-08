@@ -1,4 +1,4 @@
-const { validate, Category } = require("../models/category");
+const { validateCategory, Category } = require("../models/category");
 const express = require("express");
 const router = express.Router();
 
@@ -8,7 +8,7 @@ router.get("/all", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validateCategory(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   let category = new Category({
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const { error } = validate(req.body);
+  const { error } = validateCategory(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   let category = await Category.findByIdAndUpdate(

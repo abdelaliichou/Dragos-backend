@@ -60,6 +60,9 @@ const loginAdmin = asyncHandler(async (req, res, next) => {
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
     return next(new ApiError("Incorrect email or password", 401));
   }
+  if (user.role === "user") {
+    return next(new ApiError("Not allowed", 401));
+  }
   // 3) generate token
   const token = createToken(user._id);
 
