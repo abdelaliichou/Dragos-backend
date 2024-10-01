@@ -5,24 +5,20 @@ const authService = require("../services/AuthService");
 
 const { Product } = require("../models/product");
 
-router.get(
-  "/all",
-  [authService.protect, authService.allowedTo("admin", "manager")],
-  async (req, res) => {
-    const order = await Order.find()
-      .populate({
-        path: "products.product_id",
-        model: "product",
-        select: "name price image -_id",
-      })
-      .populate({
-        path: "payment_id",
-        model: "payment",
-        select: "type -_id",
-      });
-    res.send(order);
-  }
-);
+router.get("/all", authService.protect, async (req, res) => {
+  const order = await Order.find()
+    .populate({
+      path: "products.product_id",
+      model: "product",
+      select: "name price image -_id",
+    })
+    .populate({
+      path: "user",
+      model: "User",
+      select: "name -_id",
+    });
+  res.send(order);
+});
 
 // update status
 
@@ -198,9 +194,9 @@ router.get("/:id", async (req, res) => {
       select: "name price image -_id",
     })
     .populate({
-      path: "payment_id",
-      model: "payment",
-      select: "type -_id",
+      path: "user",
+      model: "User",
+      select: "name -_id",
     });
 
   if (!order)
